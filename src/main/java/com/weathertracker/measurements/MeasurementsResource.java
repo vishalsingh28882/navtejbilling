@@ -1,29 +1,31 @@
-package com.capitalone.weathertracker.measurements;
+package com.weathertracker.measurements;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.capitalone.weathertracker.dao.WeatherRepository;
-import com.capitalone.weathertracker.service.WeatherTrackerService;
-
 import java.net.URI;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/measurements")
+@Api(value="MeasurementsResource")
 public class MeasurementsResource {
   private final MeasurementStore store;
   private final DateTimeFormatter dateTimeFormatter;
 
-  public MeasurementsResource(WeatherTrackerService store, DateTimeFormatter dateTimeFormatter) {
-    this.store = new WeatherTrackerService();
+  public MeasurementsResource(MeasurementStore store, DateTimeFormatter dateTimeFormatter) {
+    this.store = store;
     this.dateTimeFormatter = dateTimeFormatter;
   }
 
   // features/01-measurements/01-add-measurement.feature
+  @ApiOperation(value="Create Measurements")
   @PostMapping
   public ResponseEntity<?> createMeasurement(@Valid @RequestBody Measurement measurement) {
     store.add(measurement);
@@ -34,7 +36,8 @@ public class MeasurementsResource {
   }
 
   // features/01-measurements/02-get-measurement.feature
-  @GetMapping("/{timestamp}")
+  @ApiOperation(value="Get Measurements Based on a Timestamp", response = Measurement.class)
+  @GetMapping("/{timestamp:.+}")
   public ResponseEntity<Measurement> getMeasurement(@PathVariable ZonedDateTime timestamp) {
     Measurement measurement = store.fetch(timestamp);
 

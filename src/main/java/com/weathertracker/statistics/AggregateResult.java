@@ -1,11 +1,20 @@
-package com.capitalone.weathertracker.statistics;
+package com.weathertracker.statistics;
 
-import com.capitalone.weathertracker.statistics.Statistic;
+import com.weathertracker.statistics.Statistic;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * Model class to hold the computed aggregate result
+ */
 public class AggregateResult {
+  @ApiModelProperty(notes = "Name of the metric")
   private String metric;
+
+  @ApiModelProperty(notes = "Type of statistic")
   private Statistic statistic;
+
+  @ApiModelProperty(notes = "Value of the statistic")
   private double value;
 
   public AggregateResult(String metric, Statistic statistic, double value) {

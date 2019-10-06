@@ -1,10 +1,13 @@
-package com.capitalone.weathertracker.statistics;
+package com.weathertracker.statistics;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+/**
+ * Component class for converting statistics
+ */
 @Component
 class StatisticConverter implements Converter<String, Statistic> {
   private final ObjectMapper mapper;
@@ -15,6 +18,6 @@ class StatisticConverter implements Converter<String, Statistic> {
 
   @Override
   public Statistic convert(String source) {
-    return mapper.convertValue(source, Statistic.class);
+      return mapper.convertValue(source, Statistic.class);
   }
 }

@@ -1,28 +1,43 @@
-package com.capitalone.weathertracker.measurements;
+package com.weathertracker.measurements;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import org.springframework.lang.NonNull;
 
+/**
+ * Measurement model class to hold timestamp and metrics
+ */
 public class Measurement {
   @JsonProperty(value="timestamp") @NonNull
+  @ApiModelProperty(notes = "The timestamp of the statistics")
   private ZonedDateTime timestamp;
 
   @JsonAnySetter
+  @ApiModelProperty(notes = "The metrics of the statistics")
   private Map<String, Double> metrics = new HashMap<>();
   private Map<String, Double> metricsView;
 
+  /**
+   * Method to return stored timestamp
+   * @return timestamp
+   */
   public ZonedDateTime getTimestamp() {
     return timestamp;
   }
 
+  /**
+   * Method to return all stored metrics
+   * @return Map<Name-of-the-metric, Value>
+   */
   @JsonAnyGetter
   public Map<String, Double> getMetrics() {
     if (metricsView == null)
@@ -31,10 +46,18 @@ public class Measurement {
     return metricsView;
   }
 
+  /**
+   * Method to return the stored value of the given metric
+   * @param metricName Name of the metric
+   * @return Value of the stored metric
+   */
   public Double getMetric(final String metricName) {
     return metrics.get(metricName);
   }
 
+  /**
+   * Helper builder static class
+   */
   public static class Builder {
     private ZonedDateTime timestamp;
     private Map<String, Double> metrics = new HashMap<>();
@@ -58,13 +81,7 @@ public class Measurement {
       result.timestamp = timestamp;
       result.metrics = metrics;
 
-			return result;
-		}
-	}
-	
-	@Override
-	public String toString() {
-		return "Measurement [timestamp=" + timestamp + ", metrics=" + metrics + ", metricsView=" + metricsView + "]";
-	}
-
+      return result;
+    }
+  }
 }
